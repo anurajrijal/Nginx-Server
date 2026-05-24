@@ -7,7 +7,7 @@ const port = 8080;
 const server = http.createServer((req, res) => {
   const filePath = path.join(
     __dirname,
-    req.url === "/" ? "index.html" : "req.url",
+    req.url === "/" ? "index.html" : req.url,
   );
 
   const extName = path.extname(filePath).toLowerCase();
@@ -20,17 +20,17 @@ const server = http.createServer((req, res) => {
   };
   const contentType = mimeTypes[extName] || "application/octet-stream";
 
-  fs.readFile(filePath,(err, content)=>{
-    if(err){
-        if(err.code === "ENOENT"){
-            res.writeHead(404,{"content-type":"text/html"})
-            res.end("404: File NOt Found")
-        }
-    }else{
-        res.writeHead(200, {"content-type":contentType})
-        res.end(content, 'utf-8')
+  fs.readFile(filePath, (err, content) => {
+    if (err) {
+      if (err.code === "ENOENT") {
+        res.writeHead(404, { "content-type": "text/html" });
+        res.end("404: File NOt Found");
+      }
+    } else {
+      res.writeHead(200, { "content-type": contentType });
+      res.end(content, "utf-8");
     }
-  })
+  });
 });
 
 server.listen(port, () => {
